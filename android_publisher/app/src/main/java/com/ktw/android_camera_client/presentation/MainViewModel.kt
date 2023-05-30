@@ -4,7 +4,9 @@ import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.mlkit.vision.face.Face
 import com.ktw.android_camera_client.domain.repository.CameraRepository
+import com.ktw.android_camera_client.domain.repository.FaceDetectionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
@@ -12,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repository: CameraRepository
+    private val cameraRepository: CameraRepository,
+    private val faceDetectionRepository: FaceDetectionRepository
 ): ViewModel() {
 
     fun showCameraPreview(
@@ -20,7 +23,7 @@ class MainViewModel @Inject constructor(
         lifecycleOwner: LifecycleOwner
     ) {
         viewModelScope.launch {
-            repository.showCameraPreview(
+            cameraRepository.showCameraPreview(
                 previewView,
                 lifecycleOwner,
             )
@@ -32,7 +35,16 @@ class MainViewModel @Inject constructor(
         lumaListener: (luma: Double) -> Unit
     ) {
         viewModelScope.launch {
-            repository.setImageAnalysis(executor, lumaListener)
+            cameraRepository.setImageAnalysis(executor, lumaListener)
+        }
+    }
+
+    fun setFaceDetector(
+        executor: Executor,
+        facesListener: (faces: List<Face>) -> Unit
+    ) {
+        viewModelScope.launch {
+            faceDetectionRepository.getFacePosition(executor, facesListener)
         }
     }
 }

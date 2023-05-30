@@ -50,7 +50,7 @@ object CameraXApi {
         cameraProvider: ProcessCameraProvider,
         selector: CameraSelector,
         preview: Preview,
-        imageAnalysis: ImageAnalysis
+        imageAnalysis: ImageAnalysis,
     ): CameraRepository {
         return CameraRepositoryImpl(
             cameraProvider,

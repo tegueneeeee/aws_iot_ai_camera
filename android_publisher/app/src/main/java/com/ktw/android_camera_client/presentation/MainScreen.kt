@@ -47,9 +47,11 @@ fun MainScreen(
         verticalArrangement = Arrangement.Center
     ) {
         if (cameraPermissionState.status.isGranted) {
-            Box(modifier = Modifier
-                .height(screenHeight * 0.85f)
-                .width(screenWidth)) {
+            Box(
+                modifier = Modifier
+                    .height(screenHeight * 0.85f)
+                    .width(screenWidth)
+            ) {
                 AndroidView(
                     factory = {
                         previewView = PreviewView(it)
@@ -60,11 +62,22 @@ fun MainScreen(
                         .height(screenHeight * 0.85f)
                         .width(screenWidth)
                 )
+//                AndroidView(
+//                    factory = {
+//                        analysisView = TextView(it)
+//                        viewModel.setImageAnalysis(executor) {
+//                            luma -> Log.d("ImageAnalyzer", "Average luminosity: $luma")
+//                        }
+//                        analysisView
+//                    }
+//                )
                 AndroidView(
                     factory = {
                         analysisView = TextView(it)
-                        viewModel.setImageAnalysis(executor) {
-                            luma -> Log.d("ImageAnalyzer", "Average luminosity: $luma")
+                        viewModel.setFaceDetector(executor) { faces ->
+                            for (face in faces) {
+                                Log.d("ImageAnalyzer", "Bounds: ${face.boundingBox}")
+                            }
                         }
                         analysisView
                     }

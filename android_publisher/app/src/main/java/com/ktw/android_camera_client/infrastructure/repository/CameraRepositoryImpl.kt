@@ -16,7 +16,7 @@ class CameraRepositoryImpl @Inject constructor(
     private val cameraProvider: ProcessCameraProvider,
     private val selector: CameraSelector,
     private val preview: Preview,
-    private val imageAnalysis: ImageAnalysis,
+    private val imageAnalysis: ImageAnalysis
 ) : CameraRepository {
     override suspend fun showCameraPreview(
         previewView: PreviewView,
@@ -41,19 +41,19 @@ class CameraRepositoryImpl @Inject constructor(
         lumaListener: (luma: Double) -> Unit
     ) {
         try {
-            imageAnalysis.setAnalyzer(executor, ImageAnalysis.Analyzer { image ->
+            imageAnalysis.setAnalyzer(executor, ImageAnalysis.Analyzer { imageProxy ->
                 fun ByteBuffer.toByteArray(): ByteArray {
                     rewind()
                     val data = ByteArray(remaining())
                     get(data)
                     return data
                 }
-                val buffer = image.planes[0].buffer
+                val buffer = imageProxy.planes[0].buffer
                 val data = buffer.toByteArray()
                 val pixels = data.map { it.toInt() and 0xFF }
                 val luma = pixels.average()
                 lumaListener(luma)
-                image.close()
+                imageProxy.close()
             })
         } catch (e: Exception) {
             e.printStackTrace()
