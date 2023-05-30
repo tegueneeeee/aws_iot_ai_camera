@@ -1,6 +1,9 @@
-package com.ktw.android_publisher.presentation
+package com.ktw.android_camera_client.presentation
 
 import android.Manifest
+import android.content.Context
+import android.util.Log
+import android.widget.TextView
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
@@ -13,6 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -31,9 +35,12 @@ fun MainScreen(
 
     val lifecycleOwner = LocalLifecycleOwner.current
     val configuration = LocalConfiguration.current
+    val context = LocalContext.current
+    val executor = ContextCompat.getMainExecutor(context)
     val screenHeight = configuration.screenHeightDp.dp
     val screenWidth = configuration.screenWidthDp.dp
     var previewView: PreviewView
+    var analysisView: TextView
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,6 +59,15 @@ fun MainScreen(
                     modifier = Modifier
                         .height(screenHeight * 0.85f)
                         .width(screenWidth)
+                )
+                AndroidView(
+                    factory = {
+                        analysisView = TextView(it)
+                        viewModel.setImageAnalysis(executor) {
+                            luma -> Log.d("ImageAnalyzer", "Average luminosity: $luma")
+                        }
+                        analysisView
+                    }
                 )
             }
         } else {

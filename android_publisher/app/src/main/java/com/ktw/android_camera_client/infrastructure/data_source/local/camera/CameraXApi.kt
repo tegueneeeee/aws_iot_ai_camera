@@ -1,22 +1,22 @@
-package com.ktw.android_publisher.di
+package com.ktw.android_camera_client.infrastructure.data_source.local.camera
 
 import android.app.Application
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import com.ktw.android_publisher.data.repository.CameraRepositoryImpl
-import com.ktw.android_publisher.domain.repository.CameraRepository
+import com.ktw.android_camera_client.domain.repository.CameraRepository
+import com.ktw.android_camera_client.infrastructure.repository.CameraRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+object CameraXApi {
 
     @Provides
     @Singleton
@@ -41,9 +41,7 @@ object AppModule {
     @Provides
     @Singleton
     fun provideImageAnalysis(): ImageAnalysis {
-        return ImageAnalysis.Builder()
-            .setBackpressureStrategy(STRATEGY_KEEP_ONLY_LATEST)
-            .build()
+        return ImageAnalysis.Builder().build()
     }
 
     @Provides

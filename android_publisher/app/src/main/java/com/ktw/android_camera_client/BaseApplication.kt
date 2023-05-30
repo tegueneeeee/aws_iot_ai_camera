@@ -1,4 +1,4 @@
-package com.ktw.android_publisher
+package com.ktw.android_camera_client
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

@@ -1,4 +1,4 @@
-package com.ktw.android_publisher
+package com.ktw.android_camera_client
 
 import org.junit.Test
 

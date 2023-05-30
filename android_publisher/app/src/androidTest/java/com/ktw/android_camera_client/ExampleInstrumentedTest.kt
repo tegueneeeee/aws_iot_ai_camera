@@ -1,4 +1,4 @@
-package com.ktw.android_publisher
+package com.ktw.android_camera_client
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

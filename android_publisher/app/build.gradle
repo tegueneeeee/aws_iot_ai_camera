@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.ktw.android_publisher'
+    namespace 'com.ktw.android_camera_client'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.ktw.android_publisher"
+        applicationId "com.ktw.camera_client"
         minSdk 30
         targetSdk 33
         versionCode 1

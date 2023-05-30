@@ -1,4 +1,4 @@
-package com.ktw.android_publisher
+package com.ktw.android_camera_client
 
 import android.net.Uri
 import android.os.Bundle
@@ -8,8 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.ktw.android_publisher.presentation.MainScreen
-import com.ktw.android_publisher.ui.theme.Android_publisherTheme
+import com.ktw.android_camera_client.presentation.MainScreen
+import com.ktw.android_camera_client.ui.theme.Android_publisherTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 val EMPTY_IMAGE_URI: Uri = Uri.parse("file//dev/null")

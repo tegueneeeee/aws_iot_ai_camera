@@ -1,4 +1,4 @@
-package com.ktw.android_publisher.ui.theme
+package com.ktw.android_camera_client.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
