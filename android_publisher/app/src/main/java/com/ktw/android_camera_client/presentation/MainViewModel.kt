@@ -1,12 +1,14 @@
 package com.ktw.android_camera_client.presentation
 
+import androidx.camera.core.CameraSelector
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.mlkit.vision.face.Face
 import com.ktw.android_camera_client.domain.repository.CameraRepository
-import com.ktw.android_camera_client.domain.repository.FaceDetectionRepository
+import com.ktw.android_camera_client.domain.usecase.camera.CheckCameraSwitchButtonUseCase
+import com.ktw.android_camera_client.domain.usecase.camera.StartCameraUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executor
@@ -14,37 +16,18 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val cameraRepository: CameraRepository,
-    private val faceDetectionRepository: FaceDetectionRepository
+    private val startCameraUseCase: StartCameraUseCase,
+//    private val checkCameraSwitchButtonUseCase: CheckCameraSwitchButtonUseCase
 ): ViewModel() {
-
-    fun showCameraPreview(
+    fun startCamera(
         previewView: PreviewView,
-        lifecycleOwner: LifecycleOwner
+        lifecycleOwner: LifecycleOwner,
     ) {
         viewModelScope.launch {
-            cameraRepository.showCameraPreview(
+            startCameraUseCase.execute(
                 previewView,
-                lifecycleOwner,
+                lifecycleOwner
             )
-        }
-    }
-
-    fun setImageAnalysis(
-        executor: Executor,
-        lumaListener: (luma: Double) -> Unit
-    ) {
-        viewModelScope.launch {
-            cameraRepository.setImageAnalysis(executor, lumaListener)
-        }
-    }
-
-    fun setFaceDetector(
-        executor: Executor,
-        facesListener: (faces: List<Face>) -> Unit
-    ) {
-        viewModelScope.launch {
-            faceDetectionRepository.getFacePosition(executor, facesListener)
         }
     }
 }

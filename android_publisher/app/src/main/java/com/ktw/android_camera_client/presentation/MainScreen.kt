@@ -55,7 +55,7 @@ fun MainScreen(
                 AndroidView(
                     factory = {
                         previewView = PreviewView(it)
-                        viewModel.showCameraPreview(previewView, lifecycleOwner)
+                        viewModel.startCamera(previewView, lifecycleOwner)
                         previewView
                     },
                     modifier = Modifier
@@ -71,17 +71,6 @@ fun MainScreen(
 //                        analysisView
 //                    }
 //                )
-                AndroidView(
-                    factory = {
-                        analysisView = TextView(it)
-                        viewModel.setFaceDetector(executor) { faces ->
-                            for (face in faces) {
-                                Log.d("ImageAnalyzer", "Bounds: ${face.boundingBox}")
-                            }
-                        }
-                        analysisView
-                    }
-                )
             }
         } else {
             Column {

@@ -1,17 +1,20 @@
 package com.ktw.android_camera_client.domain.repository
 
+import androidx.camera.core.CameraSelector
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import java.util.concurrent.Executor
 
 interface CameraRepository  {
-    suspend fun showCameraPreview(
+
+    fun startCamera(
         previewView: PreviewView,
-        lifecycleOwner: LifecycleOwner
+        lifecycleOwner: LifecycleOwner,
+        lensFacing: Int
     )
 
-    suspend fun setImageAnalysis(
-        executor: Executor,
-        lumaListener: (luma: Double) -> Unit
-    )
+    fun checkCameraSwitchButtonEnable(): Boolean
+
+    fun switchCamera()
+
 }

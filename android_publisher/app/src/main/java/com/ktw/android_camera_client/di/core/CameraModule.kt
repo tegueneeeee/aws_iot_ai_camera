@@ -1,4 +1,4 @@
-package com.ktw.android_camera_client.infrastructure.data_source.local.camera
+package com.ktw.android_camera_client.di.core
 
 import android.app.Application
 import androidx.camera.core.CameraSelector
@@ -6,18 +6,17 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import com.ktw.android_camera_client.domain.repository.CameraRepository
-import com.ktw.android_camera_client.infrastructure.repository.CameraRepositoryImpl
+import com.ktw.android_camera_client.infrastructure.data_source.camera.CameraService
+import com.ktw.android_camera_client.infrastructure.repository.camera.CameraRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
-object CameraXApi {
-
+class CameraModule {
     @Provides
     @Singleton
     fun provideCameraSelector(): CameraSelector {
@@ -43,21 +42,4 @@ object CameraXApi {
     fun provideImageAnalysis(): ImageAnalysis {
         return ImageAnalysis.Builder().build()
     }
-
-    @Provides
-    @Singleton
-    fun provideCameraRepository(
-        cameraProvider: ProcessCameraProvider,
-        selector: CameraSelector,
-        preview: Preview,
-        imageAnalysis: ImageAnalysis,
-    ): CameraRepository {
-        return CameraRepositoryImpl(
-            cameraProvider,
-            selector,
-            preview,
-            imageAnalysis
-        )
-    }
-
 }
