@@ -16,7 +16,7 @@ import javax.inject.Inject
 class CameraRepositoryImpl (
     private val cameraLocalDataSource: CameraLocalDataSource
 ) : CameraRepository {
-    override fun startCamera(
+    override suspend fun startCamera(
         previewView: PreviewView,
         lifecycleOwner: LifecycleOwner,
         lensFacing: Int
@@ -28,11 +28,17 @@ class CameraRepositoryImpl (
         )
     }
 
-    override fun checkCameraSwitchButtonEnable(): Boolean {
-        return cameraLocalDataSource.hasBackCamera() && cameraLocalDataSource.hasFrontCamera()
+    override fun hasBackCamera(): Boolean {
+        return cameraLocalDataSource.hasBackCamera()
     }
 
-    override fun switchCamera() {
-        TODO("Not yet implemented")
+    override fun hasFrontCamera(): Boolean {
+        return cameraLocalDataSource.hasFrontCamera()
     }
+
+    override fun currentLesFacing(): Int {
+        return cameraLocalDataSource.getLensFacing()
+    }
+
+
 }

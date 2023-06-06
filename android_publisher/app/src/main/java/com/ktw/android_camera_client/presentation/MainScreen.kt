@@ -3,6 +3,7 @@ package com.ktw.android_camera_client.presentation
 import android.Manifest
 import android.content.Context
 import android.util.Log
+import android.view.View
 import android.widget.TextView
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.*
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Observer
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -29,59 +31,55 @@ import com.google.accompanist.permissions.shouldShowRationale
 fun MainScreen(
     viewModel: MainViewModel = hiltViewModel()
 ) {
-    val cameraPermissionState = rememberPermissionState(
-        Manifest.permission.CAMERA
-    )
-
     val lifecycleOwner = LocalLifecycleOwner.current
+    viewModel.setLifecycleOwner(lifecycleOwner)
+    val cameraPermission = rememberPermissionState(Manifest.permission.CAMERA)
+    viewModel.setCameraPermissionState(cameraPermission)
     val configuration = LocalConfiguration.current
-    val context = LocalContext.current
-    val executor = ContextCompat.getMainExecutor(context)
-    val screenHeight = configuration.screenHeightDp.dp
-    val screenWidth = configuration.screenWidthDp.dp
-    var previewView: PreviewView
-    var analysisView: TextView
+    viewModel.setScreenHeight(configuration)
+    viewModel.setScreenWidth(configuration)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (cameraPermissionState.status.isGranted) {
+        if (viewModel.cameraPermissionState.value!!.status.isGranted) {
             Box(
                 modifier = Modifier
-                    .height(screenHeight * 0.85f)
-                    .width(screenWidth)
+                    .height(viewModel.screenHeight.value!! * 0.85f)
+                    .width(viewModel.screenWidth.value!!)
             ) {
                 AndroidView(
                     factory = {
-                        previewView = PreviewView(it)
-                        viewModel.startCamera(previewView, lifecycleOwner)
-                        previewView
+                        viewModel.setPreviewView(it)
+                        viewModel.startCamera()
+                        viewModel.previewView.value!!
+                    },
+                    update = {
+
                     },
                     modifier = Modifier
-                        .height(screenHeight * 0.85f)
-                        .width(screenWidth)
+                        .height(viewModel.screenHeight.value!! * 0.85f)
+                        .width(viewModel.screenWidth.value!!)
                 )
-//                AndroidView(
-//                    factory = {
-//                        analysisView = TextView(it)
-//                        viewModel.setImageAnalysis(executor) {
-//                            luma -> Log.d("ImageAnalyzer", "Average luminosity: $luma")
-//                        }
-//                        analysisView
-//                    }
-//                )
+                Button(
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                    onClick = {
+                        viewModel.switchCamera()
+                    }) {
+                    
+                }
             }
         } else {
             Column {
-                val textToShow = if (cameraPermissionState.status.shouldShowRationale) {
+                val textToShow = if (viewModel.cameraPermissionState.value!!.status.shouldShowRationale) {
                     "The camera is important for this app. Please grant the permission."
                 } else {
                     "Camera permission required for this feature to be available. " +
                             "Please grant the permission"
                 }
                 Text(textToShow)
-                Button(onClick = { cameraPermissionState.launchPermissionRequest() }) {
+                Button(onClick = { viewModel.cameraPermissionState.value!!.launchPermissionRequest() }) {
                     Text("Request permission")
                 }
             }

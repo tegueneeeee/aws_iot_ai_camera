@@ -7,14 +7,15 @@ import java.util.concurrent.Executor
 
 interface CameraRepository  {
 
-    fun startCamera(
+    suspend fun startCamera(
         previewView: PreviewView,
         lifecycleOwner: LifecycleOwner,
         lensFacing: Int
     )
 
-    fun checkCameraSwitchButtonEnable(): Boolean
+    fun hasBackCamera(): Boolean
 
-    fun switchCamera()
+    fun hasFrontCamera(): Boolean
+    fun currentLesFacing(): Int
 
 }

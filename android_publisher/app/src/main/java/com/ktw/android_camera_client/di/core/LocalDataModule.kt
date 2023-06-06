@@ -22,13 +22,11 @@ class LocalDataModule {
         cameraProvider: ProcessCameraProvider,
         preview: Preview,
         imageAnalysis: ImageAnalysis,
-        selector: CameraSelector
     ): CameraLocalDataSource {
         return CameraLocalDataSourceImpl(
             cameraProvider,
             preview,
             imageAnalysis,
-            selector
         )
     }
 }

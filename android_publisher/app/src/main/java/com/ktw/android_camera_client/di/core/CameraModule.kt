@@ -17,13 +17,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class CameraModule {
-    @Provides
-    @Singleton
-    fun provideCameraSelector(): CameraSelector {
-        return CameraSelector.Builder()
-            .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-            .build()
-    }
 
     @Provides
     @Singleton

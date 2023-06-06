@@ -7,11 +7,15 @@ import androidx.lifecycle.LifecycleOwner
 import com.ktw.android_camera_client.domain.repository.CameraRepository
 
 class StartCameraUseCase(private val cameraRepository: CameraRepository) {
-    fun execute(
+    suspend fun execute(
         previewView: PreviewView,
         lifecycleOwner: LifecycleOwner,
     ) {
-        val lensFacing = CameraSelector.LENS_FACING_BACK
+        val lensFacing = when {
+            cameraRepository.hasBackCamera() -> CameraSelector.LENS_FACING_BACK
+            cameraRepository.hasFrontCamera() -> CameraSelector.LENS_FACING_FRONT
+            else -> throw IllegalStateException("Back and Front camera are unavailable")
+        }
         return cameraRepository.startCamera(
             previewView,
             lifecycleOwner,
